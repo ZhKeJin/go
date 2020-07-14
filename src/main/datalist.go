@@ -169,5 +169,7 @@ func main() {
 	aqq := 10
 	fmt.Println(aqq)
 
+	fmt.Print("zhangkejin")
+
 
 }
