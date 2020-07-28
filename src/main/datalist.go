@@ -3,6 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"strconv"
+	"time"
+	"unsafe"
 )
 
 //struct User{
@@ -54,15 +57,15 @@ func main() {
 
 	b1 = append(b1,a2...)
 	fmt.Println(len(b1),",,,",cap(b1)) // 自动扩容，和数组的区别
-	fmt.Println(a1, b1, a2)
+	fmt.Println("....",a1, b1, a2)
 
 	fmt.Println("================================")
 	//map的创建
 	//字面量的创建
-	ma := map[string]int{"a" : 1, "b" : 2}
 
-	fmt.Println("ma[a] = ", ma["a"])		// ma[a] =  1
-	fmt.Println("ma[b] = ", ma["b"])		// ma[b] =  2
+
+	//fmt.Println("ma[a] = ", ma["a"])		// ma[a] =  1
+	//fmt.Println("ma[b] = ", ma["b"])		// ma[b] =  2
 
 
 	// make(map[K]T) 	  map 的容量使用默认值
@@ -129,7 +132,7 @@ func main() {
 	}
 
 	person = append(person, p)
-	fmt.Println(person)
+	fmt.Println("person:",person)
 
 	// value 为User对象
 	user := User{
@@ -165,11 +168,206 @@ func main() {
 		fmt.Println(string(marshal))
 	}
 
-	fmt.Println("=======================================")
-	aqq := 10
-	fmt.Println(aqq)
+	fmt.Println("数据类型=======================================")
 
-	fmt.Print("zhangkejin")
+	//格式化输出
+	var n1 = 100
+	fmt.Printf("n1 的类型是 %T \n",n1)
+
+	//求变量的字节大小，和数据类型
+	var n2 int64 = 12
+	fmt.Printf("n2的类型 %T  n2的字节数的%d",n2,unsafe.Sizeof(n2))
+
+	//字符
+	var c1 = 'a'
+	fmt.Println("c1=",c1)
+
+	//类型转换
+	var num1 int64 = 999999
+	var b3 int8 = int8(num1)
+	fmt.Println("b3:",b3)
+
+	var str string
+	//string 的类型转化  为 其他类型
+	var num3 int = 54
+	str = fmt.Sprintf("%d", num3)
+	fmt.Printf("str的类型是：%T 值为：%q\n", str, str)
+
+	var num5 int = 54
+	str = strconv.FormatInt(int64(num5),10)
+	fmt.Printf("str 的类型的为%T, 值为：%q\n",str,str)
+
+	//string  转化为  其他类型
+	var n22 int8
+	var n11 int64
+	var sr string = "111222333"
+	n11, _ = strconv.ParseInt(sr,10,8)
+	n22 = int8(n11)
+	fmt.Printf("str类型为 %T, 值为：%v\n",n11,n11)
+	fmt.Printf("str类型为 %T, 值为：%v\n",n22,n22)
+
+	//指针类型
+	fmt.Println("指针类型=======================================")
+    var nu int = 9
+    fmt.Printf("num的地址为:%v",&nu)
+
+    var ptr *int
+    ptr = &nu
+    *ptr = 10
+    fmt.Printf("nu的值为：%v\n",nu)
+
+
+    //跳转
+	fmt.Println("跳转方法=======================================")
+    var rr int64
+    fmt.Printf("输入值：")
+    //fmt.Scanln(&rr)
+    if rr>18{
+	    fmt.Println("年龄太小")
+    }else{
+    	fmt.Println("is ok")
+	}
+
+    //for 循环
+    var cen int = 9
+    for i:=0; i<cen; i++{
+    	for j:=1; j<=i+1; j++{
+			fmt.Printf("%v * %v = %v ",i+1,j,j*(i+1))
+		}
+		fmt.Println()
+	}
+
+    //函数
+    fmt.Println(sum(1,2,3,4,5,6,7))
+
+    //匿名函数
+	fmt.Println("匿名函数=======================================")
+    res1 := func (a int ,b int)int {
+    	return a+b
+	}(12,2)
+
+    fmt.Println("res:",res1)
+
+    //函数的传地址
+    //var er int64 = 53
+    er := 64
+    add1(&er)
+
+    //时间类
+	fmt.Println("时间类=======================================")
+
+	now := time.Now()
+    fmt.Println("now:",now)
+    fmt.Printf("now=%v,now type =%T\n",now,now )
+    fmt.Printf("年=%v\n", now.Year())
+
+	//格式化时间
+	fmt.Printf("当前时间的年月日为%d,%d,%d\n",now.Year(),now.Month(),now.Day())
+
+	fmt.Printf(now.Format("2222-02-22 01:01:01"))
+	fmt.Println()
+
+	//时间戳
+	fmt.Printf("unix的时间戳为 %v,unixnano的时间戳为：%v\n",now.Unix(),now.UnixNano())
+
+	//异常
+	fmt.Println("异常类=======================================")
+	test()
+	fmt.Println("异常测试")
+
+
+	fmt.Println("map的使用=======================================")
+    //map的使用
+	//字面量创建
+    ma := map[string]int{"a" : 1, "b" : 2}
+	fmt.Println("ma:",ma)
+	//make创建
+    var map1 map[string]string
+	map1 = make(map[string]string)
+	map1["name"] = "zhangkejin"
+	map1["age"] = "zhangkejin"
+	map1["address"] = "zhangkejin"
+
+	//遍历
+	for k,v := range map1{
+		fmt.Printf("key:%v,value:%v",k,v)
+	}
+
+	//切片创建 map
+	var map2 []map[string]string
+	map2 = make([]map[string]string, 2)
+	if map2[0] == nil{
+		map2[0] = make(map[string]string,2)
+		map2[0]["name"] = "zhangkejin"
+		map2[0]["age"] = "zhangkejin"
+	}
+	if map2[1] == nil{
+		map2[1] = make(map[string]string,2)
+		map2[0]["name"] = "zhangkejin"
+		map2[0]["age"] = "zhangkejin"
+	}
+
+	//map的复杂类型 是map 但不是切片
+	studentmap := make(map[string]map[string]string)
+	studentmap["stu1"] = make(map[string]string, 3)
+	studentmap["stu1"]["name"] = "zhangkejin"
+	studentmap["stu1"]["age"] = "zhangkejin"
+	studentmap["stu1"]["phone"] = "zhangkejin"
+
+	studentmap["stu1"] = make(map[string]string, 3)
+	studentmap["stu1"]["name"] = "zhangkejin"
+	studentmap["stu1"]["age"] = "zhangkejin"
+	studentmap["stu1"]["phone"] = "zhangkejin"
+
+	for k1, v1 := range studentmap {
+		fmt.Printf("k1=%v",k1)
+		for k2, v2 := range v1 {
+			fmt.Printf("k2=%v,v2=%v\n",k2,v2)
+		}
+	}
+
+
+	
+
 
 
 }
+
+func test(){
+	//处理异常
+	//使用defer 和  recover  来处理错误
+	defer func() {
+		err := recover()
+		if err != nil{
+			fmt.Println("err:",err)
+		}
+	}()
+	num1 := 10
+	num2 := 0
+	res := num1/num2
+	fmt.Println("res:",res)
+
+
+}
+
+
+func init() {
+	fmt.Println("THIS IS init()")
+}
+
+func add1(a1 *int){
+	*a1 = *a1+10
+}
+
+
+//args是切片类型
+func sum(n1 int, args... int )int {
+	sun := n1
+	for i:=0; i<len(args); i++ {
+		 sun += args[i]
+	}
+	return sun
+
+}
+
+
