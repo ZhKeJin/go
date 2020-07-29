@@ -18,6 +18,11 @@ type User struct{
 	age int     `json:"age"`
 }
 
+type Student struct{
+	name string
+	Age int
+}
+
 
 type A struct{
 	name string
