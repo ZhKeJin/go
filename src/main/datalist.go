@@ -14,8 +14,13 @@ import (
 //}
 
 type User struct{
-	name string `json:"num"`
-	age int     `json:"age"`
+	name string `json:"User_name"`
+	age int     `json:"User_age"`
+}
+
+type User1 struct{
+	Name string `json:"User_name"`
+	Age int     `json:"User_age"`
 }
 
 type Student struct{
@@ -332,11 +337,95 @@ func main() {
 	}
 
 
-	
+	//json的序列化和反序列化  map struct  slice
+	fmt.Println("map的使用=======================================")
+
+	testMap()
+	testSlice()
+	//struct 的序列化   会根据反射： 按照json的 反射出来
+	user8 := User1{"zhangsan",34}
+	jsonstr, err := json.Marshal(&user8)
+	if err != nil{
+		fmt.Println("json error")
+	}
+	fmt.Println("struct : ..jsonstr:", string(jsonstr))//struct : ..jsonstr: {"User_name":"zhangsan","User_age":34}
+
+    // 反序列化   这里用到的是 json 后的定义
+    usere := "{\"User_name\":\"zhangkejin\", \"User_age\":23}"
+    var user9 User1
+	err = json.Unmarshal([]byte(usere), &user9)
+    if err != nil{
+    	fmt.Println("json error ")
+	}
+	fmt.Println("jsonstr:", user9)
 
 
 
 }
+
+
+//将map进行序列化
+func testMap(){
+	var a map[string]interface{}
+	//使用map 一定要make
+	a = make(map[string]interface{})
+	a["name"] = "zhangkejin"
+	a["age"] = 333
+	a["address"] = "luliang"
+
+	jsonstr, err := json.Marshal(a)
+	if err != nil{
+		fmt.Println("json error ")
+	}
+	fmt.Println("Map : jsonstr:",jsonstr)
+	fmt.Println("str(jsonstr):",string(jsonstr))
+
+}
+
+//将切片进行序列化
+func testSlice() {
+	//var slice []map[string]interface{}
+	slice := make([]map[string]interface{},2)
+	slice1 := make(map[string]interface{},3)
+	slice1["name"] = "zhangkejin"
+	slice1["age"] = 23
+	slice1["add"] = "zhangkejin"
+
+	slice = append(slice, slice1)
+	//if slice[0] == nil {
+	//	slice[0] = make(map[string]interface{},3)
+	//	slice[0]["name"] = "zhangkejin"
+	//	slice[0]["age"] = 12
+	//	slice[0]["add"] = "zhangkejin"
+	//}
+	//if slice[1] == nil {
+	//	slice[1] = make(map[string]interface{},3)
+	//
+	//	slice[1]["name"] = "222zhangkejin"
+	//	slice[1]["age"] = 22212
+	//	slice[1]["add"] = "222zhangkejin"
+	//}
+
+    jsonstr, err := json.Marshal(slice)
+    if err != nil{
+		fmt.Println("json error ")
+	}else{
+		fmt.Println("slice  jsonstr:", jsonstr)
+		fmt.Println("string(jsonstr):", string(jsonstr))
+	}
+
+
+
+
+
+
+}
+
+
+
+
+
+
 
 func test(){
 	//处理异常

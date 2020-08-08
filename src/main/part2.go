@@ -30,9 +30,11 @@ func (d *Dog) eat(a int)int{
 
 
 func main(){
+	//stu := Student{"zangkeijn",34}
+	//fmt.Println(stu)
 
-	stu :=Student {"zhangkeing",34}
-    fmt.Println(stu)
+	//stu :=Student {"zhangkeing",34}
+    //fmt.Println(stu)
 
 	var per person
 	fmt.Println(per)
@@ -80,7 +82,7 @@ func main(){
 
 	//
 	////引用modle中的 person
-	//per :=
+	//per := modle.
 
 
 
